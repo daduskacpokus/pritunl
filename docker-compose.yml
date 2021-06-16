@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: admin
+    networks: 
+      default:
+        ipv4_address: 192.168.189.130
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongoadmin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: secret
+    networks: 
+      default:
+        ipv4_address: 192.168.189.131
+
+  
+  pritunl:
+    image: docker.io/pritunl/pritunl-zero
+    environment: 
+      MONGO_URI: "mongodb://mongoadmin:secret@192.168.189.130:27017/admin?retryWrites=true&w=majority"
+      NODE_ID: "5b8e11e4610f990034635e98"
+    ports:
+      - 80:80
+    networks: 
+      default:
+        ipv4_address: 192.168.189.132        
+      frontend:
+networks: 
+  default:
+    ipam:
+      config:
+      - subnet: 192.168.189.128/25    
+  frontend:
