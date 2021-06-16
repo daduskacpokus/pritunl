@@ -12,6 +12,8 @@ services:
     networks: 
       default:
         ipv4_address: 192.168.189.130
+    volumes: 
+      - mongo_data:/data/db
 
   mongo-express:
     image: mongo-express
@@ -33,6 +35,7 @@ services:
       NODE_ID: "5b8e11e4610f990034635e98"
     ports:
       - 80:80
+      - 443:443
     networks: 
       default:
         ipv4_address: 192.168.189.132        
@@ -43,3 +46,5 @@ networks:
       config:
       - subnet: 192.168.189.128/25    
   frontend:
+volumes:
+  mongo_data:
